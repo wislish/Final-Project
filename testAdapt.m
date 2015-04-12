@@ -1,0 +1,23 @@
+newusers=cell(4,1);
+user1=cell(4,1);
+user2=cell(4,1);
+user3=cell(4,1);
+user4=cell(4,1);
+user1{3,1}=testusers{1,1}{3,1}(1);
+user1{4,1}=testusers{1,1}{3,1}(2);
+user2{3,1}=testusers{1,1}{3,1}(1);
+user2{4,1}=testusers{1,1}{3,1}(2);
+user3{3,1}=testusers{1,1}{3,1}(1);
+user3{4,1}=testusers{1,1}{3,1}(2);
+user4{3,1}=testusers{1,1}{3,1}(1);
+user4{4,1}=testusers{1,1}{3,1}(2);
+newusers{1,1}=user1;
+newusers{2,1}=user2;
+newusers{3,1}=user3;
+newusers{4,1}=user4;
+
+usersUTM = cell(4,1);
+usersUTM{1,1}=[250,3750];
+usersUTM{2,1}=[500,3250];
+usersUTM{3,1}=[750,3750];
+usersUTM{4,1}=[1500,2500];
