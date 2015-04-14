@@ -3,7 +3,7 @@ function [newUsersInterval] = translateNewInterval(users)
 dateToTimeRatio = 24*60*60;
 breaklimit = 10*60; % the track will be re-started if there exist 10-min break
 r = 6400;
-newUsersInterval = cell(182,1);
+newUsersInterval = cell(length(users),1);
 
  for i=1:length(users)
     

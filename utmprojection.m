@@ -7,6 +7,7 @@ usersUTM=cell(length(users),1);
 for i=1:length(users)
     
     user = users{i,1};
+    disp(i);
     L = [user{1,1},user{2,1}];
     R=zeros(size(L));
     for k=1:size(L,1)

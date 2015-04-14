@@ -7,9 +7,10 @@ k_threshold=3;
 
 % Translate to 10 minutes, 1 km zone data
 
-% newusers=translateNewInterval(users);
-testusers = newusers;
-% usersUTM=utmprojection(testusers);
+% testusers=translateNewInterval(testusers);
+newusers = testusers;
+newusersUTM=usersUTM;
+%  usersUTM=utmprojection(testusers);
 % Begin cloaking
 for i=1:length(testusers)
     
@@ -103,29 +104,37 @@ for i=1:length(testusers)
         end
         disp('odl_k');
         disp(old_k);
-        pause;
+    
         %       delete k_neighbor cell
-        if old_k >=k_threshold
-            for num = 1:size(oldNeighbor,2)
-                l=oldNeighbor(1,num);
-                m=oldNeighbor(2,num);
-                for n=1:4
-                    testusers{l,1}{n,1}(m)=[];
-                    
-                end
-                newusers{l,1}{1,1}(m)=(newzone(1,1)+newzone(2,1))/2;
-                newusers{l,1}{2,1}(m)=(newzone(1,2)+newzone(3,2))/2;
-                usersUTM{l,1}(m,1)=[];
-                usersUTM{l,1}(m,2)=[];
+        for num = 1:size(oldNeighbor,2)
+            l=oldNeighbor(1,num);
+            m=oldNeighbor(2,num);
+            
+            for n=1:4
+                testusers{l,1}{n,1}(m)=[];
             end
-            %        x,y change to the centre of the newzone.
-            %%%%%%%%%%%%%%%%%%%
-            disp('find!!');
-        else
-%    delete and mark **
-            disp('no neighbors!!');
+            
+            usersUTM{l,1}(m,1)=[];
+            usersUTM{l,1}(m,2)=[];
+            if old_k >=k_threshold                
+                disp('find!!');              
+                %        x,y change to the centre of the newzone.
+                %%%%%%%%%%%%%%%%%%%
+                newX=(newzone(1,1)+newzone(2,1))/2;
+                newY=(newzone(1,2)+newzone(3,2))/2;
+                [newLat,newLon] = utmreverse(newX,newY);
+                newusers{l,1}{1,1}(m) = newLat;
+                newusers{l,1}{2,1}(m) = newLon;
+            else
+                %  mark '*'
+                disp('no neighbors!!');
+                newusers{l,1}{1,1}(m)=0;
+                newusers{l,1}{2,1}(m)=0;
+            end
             
         end
+        
+        
     end
     
     
