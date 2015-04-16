@@ -3,14 +3,15 @@
 iniArea = 4*4; %km*km
 q=iniArea;
 q_prev=q;
-k_threshold=3;
-
+k_threshold=2;
+numOfRecord=0;
+record=[];
 % Translate to 10 minutes, 1 km zone data
 
 % testusers=translateNewInterval(testusers);
 newusers = testusers;
+usersUTM=utmprojection(testusers);
 newusersUTM=usersUTM;
-%  usersUTM=utmprojection(testusers);
 % Begin cloaking
 for i=1:length(testusers)
     
@@ -29,11 +30,9 @@ for i=1:length(testusers)
         usery = userutm(j,2);
         starttime = datenum(user{3,1}(j));
         endtime = datenum(user{4,1}(j));
-        
         %         anonymizer should not be created each single time.!!
-        %         [cenX,cenY] = anonymizer(userx,usery,iniArea);
-        cenX=2000;
-        cenY=2000;
+        [cenX,cenY] = anonymizer(userx,usery,iniArea);
+        
         originside = (sqrt(iniArea)/2)*1000;
         upperLeft = [cenX-originside,cenY+originside];
         upperRight = [cenX+originside,cenY+originside];
@@ -104,34 +103,49 @@ for i=1:length(testusers)
         end
         disp('odl_k');
         disp(old_k);
-    
+        
         %       delete k_neighbor cell
-        for num = 1:size(oldNeighbor,2)
-            l=oldNeighbor(1,num);
-            m=oldNeighbor(2,num);
-            
+        
+        if old_k >=k_threshold
+            disp('find!!');
+            numOfRecord=numOfRecord+1;
+            disp(numOfRecord);
+            %        x,y change to the centre of the newzone.
+            %%%%%%%%%%%%%%%%%%%
+            newX=(newzone(1,1)+newzone(2,1))/2;
+            newY=(newzone(1,2)+newzone(3,2))/2;
+            [newLat,newLon] = utmreverse(newX,newY);
             for n=1:4
-                testusers{l,1}{n,1}(m)=[];
+                testusers{i,1}{n,1}(j)=[];
             end
-            
-            usersUTM{l,1}(m,1)=[];
-            usersUTM{l,1}(m,2)=[];
-            if old_k >=k_threshold                
-                disp('find!!');              
-                %        x,y change to the centre of the newzone.
-                %%%%%%%%%%%%%%%%%%%
-                newX=(newzone(1,1)+newzone(2,1))/2;
-                newY=(newzone(1,2)+newzone(3,2))/2;
-                [newLat,newLon] = utmreverse(newX,newY);
+            usersUTM{i,1}(j,:)=[];
+            newusers{i,1}{1,1}(j) = newLat;
+            newusers{i,1}{2,1}(j) = newLon;
+            %             else
+            %                 %  mark '*'
+            %                 disp('no enough neighbors!!');
+            %                 newusers{l,1}{1,1}(m)=0;
+            %                 newusers{l,1}{2,1}(m)=0;
+            for num = 1:old_k
+                l=oldNeighbor(1,num);
+                m=oldNeighbor(2,num);
+                
+                for n=1:4
+                    testusers{l,1}{n,1}(m)=[];
+                end
+                
+                usersUTM{l,1}(m,:)=[];
                 newusers{l,1}{1,1}(m) = newLat;
                 newusers{l,1}{2,1}(m) = newLon;
-            else
-                %  mark '*'
-                disp('no neighbors!!');
-                newusers{l,1}{1,1}(m)=0;
-                newusers{l,1}{2,1}(m)=0;
             end
             
+        else
+            for n=1:4
+                testusers{i,1}{n,1}(j)=[];
+            end
+            usersUTM{i,1}(j,:)=[];
+            newusers{i,1}{1,1}(j) = 0;
+            newusers{i,1}{2,1}(j) = 0;
         end
         
         
