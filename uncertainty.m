@@ -1,4 +1,4 @@
-function [newusers] = uncertainty(iniArea,coverage,usersRoute)
+function [newusers] = uncertainty(usersRoute,iniArea,coverage)
 % uncertain region, equal  to iniArea of adaptive interval.
 % square area, like in the adpative
 % initial privacy

@@ -1,8 +1,6 @@
-function [newusers] = adaptiveinterval(usersRoute)
+function [newusers] = adaptiveinterval(usersRoute,iniArea,k_threshold)
 % Location 3-Anonymity example
 % Define some parameters for the Adaptive-Interval Algorithm
-iniArea = 4*4; %km*km
-k_threshold=2;
 numOfRecord=0;
 
 % testusers=translateNewInterval(testusers);
