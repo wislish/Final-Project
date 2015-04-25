@@ -1,8 +1,9 @@
-function [newusers] = adaptiveinterval(usersRoute,iniArea,k_threshold)
-% Location 3-Anonymity example
+function [newusers] = adaptiveinterval(usersRoute,iniArea,time_resolution,k_threshold)
+% Location k_threshold-Anonymity example
 % Define some parameters for the Adaptive-Interval Algorithm
 numOfRecord=0;
 
+dateToTimeRatio = 24*60*60;
 % testusers=translateNewInterval(testusers);
 testusers=usersRoute;
 newusers = testusers;
@@ -29,9 +30,7 @@ for i=1:length(testusers)
             q_prev=q;
             userx = userutm(j,1);
             usery = userutm(j,2);
-            %             starttime = datenum(user{3,1}(j));
-            %             endtime = datenum(user{4,1}(j));
-            %         anonymizer should not be created each single time.!!
+            time = datenum(user{3,1}(j))*dateToTimeRatio;
             [cenX,cenY] = anonymizer(userx,usery,iniArea);
             
             originside = (sqrt(iniArea)/2)*1000;
@@ -77,20 +76,20 @@ for i=1:length(testusers)
                             end
                             tuserx=checkuserutm(m,1);
                             tusery=checkuserutm(m,2);
-                            %                             tstarttime = datenum(checkuser{3,1}(m));
-                            %                             tendtime = datenum(checkuser{4,1}(m));
+                            ttime = datenum(checkuser{3,1}(m))*dateToTimeRatio;
+  
                             %                     if (endtime>tstarttime && starttime <tstarttime && ((tendtime-starttime)<4*(endtime-tstarttime))) || (starttime>tstarttime && starttime<tendtime && ((endtime-tstarttime)<4*(tendtime-starttime)))
-                            %                             if (endtime>=tstarttime && starttime <=tstarttime ) || (starttime>=tstarttime && starttime<=tendtime)
-                            if tuserx > newzone(1,1) && tuserx<newzone(2,1) && tusery>newzone(3,2) && tusery < newzone(2,2)
-%                                 disp('neighbor+1');
-                                k_neighbor=k_neighbor+1;
-                                recordNeighbor(1,k_neighbor)=l;
-                                recordNeighbor(2,k_neighbor)=routeNum2;
-                                recordNeighbor(3,k_neighbor)=m;
-                                
-                                break;
+                            if ttime<=(time+time_resolution) && ttime>=(time+time_resolution)
+                                if tuserx > newzone(1,1) && tuserx<newzone(2,1) && tusery>newzone(3,2) && tusery < newzone(2,2)
+                                    %                                 disp('neighbor+1');
+                                    k_neighbor=k_neighbor+1;
+                                    recordNeighbor(1,k_neighbor)=l;
+                                    recordNeighbor(2,k_neighbor)=routeNum2;
+                                    recordNeighbor(3,k_neighbor)=m;
+                                    
+                                    break;
+                                end
                             end
-                            %                             end
                         end
                     end
                 end

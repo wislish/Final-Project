@@ -8,8 +8,9 @@ sensitive_area = uncertain_area*coverage;
 testusers = usersRoute;
 newusers = testusers;
 usersUTM=utmprojection(testusers);
+disp('begin to uncertainty!!!!!!!!!!!!!!!!!!!!!!!!');
 for i=1:length(testusers)
-    
+    disp(i);
     newUserRoute = testusers{i,1};
     for routeNum=1:size(newUserRoute,1)
         

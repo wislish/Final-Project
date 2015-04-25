@@ -6,7 +6,7 @@ Route=[];
 RouteNum=0;
 
 kanonymityUTM = utmprojection(kanonymityUsers);
-
+disp('begin to find!!!!!!!!!!!!!!!!')
 for i = 1:length(kanonymityUsers)
         kanonymityUserRoute = kanonymityUTM{i,1};
     for j=1:size(kanonymityUserRoute,1)
@@ -46,7 +46,7 @@ for i = 1:length(kanonymityUsers)
             OtherUserRoute = kanonymityUTM{k,1};
             
             for routeNum=1:size(OtherUserRoute,1)
-                checkuserutm=OtherUserRoute{k,1}{routeNum,1};
+                checkuserutm=OtherUserRoute{routeNum,1};
                 if size(checkuserutm,1)<numOfPoints
                     continue;
                 end
@@ -62,7 +62,7 @@ for i = 1:length(kanonymityUsers)
                         break;
                     end
                     
-                    if tuserx > newzone(lever,1) && tuserx<newzone(lever,3) && tusery>newzone(lever,6) && tusery < newzone(lever,4) && ttime>timezone(lever,1) && ttime>timezone(lever,2)
+                    if tuserx > newzone(level,1) && tuserx<newzone(level,3) && tusery>newzone(level,6) && tusery < newzone(level,4) && ttime>timezone(level,1) && ttime>timezone(level,2)
                         checkPoints=1;
                         seq=l;
                         while level<numOfPoints && checkPoints==level
@@ -71,7 +71,7 @@ for i = 1:length(kanonymityUsers)
                             tuserx=checkuserutm(seq,1);
                             tusery=checkuserutm(seq,2);
                             ttime=datenum(kanonymityUsers{k,1}{routeNum,1}{3,1}(seq))*dateToTimeRatio;
-                            if tuserx > newzone(lever,1) && tuserx<newzone(lever,3) && tusery>newzone(lever,6) && tusery < newzone(lever,4) && ttime>timezone(lever,1) && ttime>timezone(lever,2)
+                            if tuserx > newzone(level,1) && tuserx<newzone(level,3) && tusery>newzone(level,6) && tusery < newzone(level,4) && ttime>timezone(level,1) && ttime>timezone(level,2)
                                 checkPoints=checkPoints+1;
                             end
                         end
@@ -98,6 +98,7 @@ for i = 1:length(kanonymityUsers)
             RouteNum=RouteNum+1;
             Route(1,RouteNum)=i;
             Route(2,RouteNum)=j;
+            
         end
         
     end
